@@ -12,7 +12,7 @@ public class AuditorAwareImpl implements AuditorAware<String> {
 		String username = SecurityContextHolder.getContext().getAuthentication().getName();
 		
 		if(username=="anonymousUser") {
-			username="SELF-REGISTER/No user recorded";
+			username="SELF-REGISTER";
 		}
 		
 		return Optional.ofNullable(username);

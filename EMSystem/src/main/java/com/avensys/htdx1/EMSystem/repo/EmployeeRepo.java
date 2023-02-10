@@ -19,9 +19,11 @@ public interface EmployeeRepo extends CrudRepository<Employee, Long> {
 //	public List<Employee> findByEmail(String email);
 //	public Employee findByEmail(String email);
 	public Employee findByUserEntityId(Long id);
+	public List<Employee> findByUserEntityUsername(String username);
 	public boolean existsByUserEntityId(Long id);
 	public boolean existsByIdAndUserEntityId(long id, long userId);
 	public boolean existsByEmail(String email);
+	public boolean existsByUserEntityUsername(String username);
 	
 	@Query(value = "SELECT id FROM employee WHERE email = :email", nativeQuery = true)
 	List<Long> findAllIdByEmail(@Param("email") String email);

@@ -9,8 +9,10 @@ import org.springframework.stereotype.Service;
 
 import com.avensys.htdx1.EMSystem.dto.PWChangeDTO;
 import com.avensys.htdx1.EMSystem.entity.Employee;
+import com.avensys.htdx1.EMSystem.entity.Role;
 import com.avensys.htdx1.EMSystem.entity.UserEntity;
 import com.avensys.htdx1.EMSystem.repo.EmployeeRepo;
+import com.avensys.htdx1.EMSystem.repo.RoleRepo;
 import com.avensys.htdx1.EMSystem.repo.UserRepo;
 
 @Service
@@ -21,6 +23,9 @@ public class UserService {
 
 	@Autowired
 	EmployeeRepo er;
+
+	@Autowired
+	RoleRepo rr;
 
 	@Autowired
 	private PasswordEncoder pe;
@@ -83,7 +88,7 @@ public class UserService {
 	public String updatePassword(PWChangeDTO u) {
 		if (ur.existsByUsername(u.getUsername())) {
 			UserEntity user = ur.findByUsername(u.getUsername()).get();
-			System.out.println("DTO: "+u.toString());
+			System.out.println("DTO: " + u.toString());
 //			System.out.println("New pw:" + pe.encode(u.getPassword()));
 //			System.out.println("Old pw:" + pe.encode(u.getOldpassword()));
 //			System.out.println("Records:" + user.getUsername());
@@ -114,5 +119,30 @@ public class UserService {
 			return false;
 		}
 
+	}
+
+	public String authAdmin(Long id) {
+		try {
+			if (ur.existsById(id)) {
+				UserEntity user = ur.findById(id).get();
+				Role admin_role = rr.findByName("ADMIN").get();
+				List<Role> roles = user.getRoles();
+//				System.out.println(user.getEmployee().getId());
+				
+				if (!roles.contains(admin_role)) {
+					roles.add(admin_role);
+					user.setRoles(roles);
+					UserEntity newUser = ur.save(user);
+					System.out.println("New User" + newUser.getEmployee().getId()); 
+					return "Administrator rights added to (*user*)";
+				} else {
+					return "Employee already has Administrator rights";
+				}
+			} else {
+				return "User does not exist";
+			}
+		} catch (Exception e) {
+			return "Exception caught: "+e.getMessage();
+		}
 	}
 }

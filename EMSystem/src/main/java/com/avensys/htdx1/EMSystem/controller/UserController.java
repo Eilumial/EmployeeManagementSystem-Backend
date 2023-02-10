@@ -81,9 +81,21 @@ public class UserController {
 		return us.deleteUser(id);
 	}
 	
-	@PostMapping(USER_API_PATH+"/pw")
+	@PostMapping(value= {USER_API_PATH+"/pw","/ems/u"+"/pw"})
 	public String updatePassword(@RequestBody PWChangeDTO logUser) {
 		return us.updatePassword(logUser);
 		
 	}
+	
+	@PutMapping(USER_API_PATH+"/authadmin/{id}")
+	public String authAdmin(@PathVariable("id") Long id) {
+		return us.authAdmin(id);
+	}
+	
+	
+//	@PostMapping(value="/ems/u"+"/pw")
+//	public String updatePasswordForUser(@RequestBody PWChangeDTO logUser) {
+//		return us.updatePassword(logUser);
+//		
+//	}
 }

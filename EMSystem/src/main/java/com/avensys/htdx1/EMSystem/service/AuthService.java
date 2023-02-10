@@ -68,7 +68,7 @@ public class AuthService {
 		roles.add(user_role);
 
 		// >>>>>ADMIN ROLE<<<<<<
-		roles.add(admin_role);
+//		roles.add(admin_role);
 		user.setRoles(roles);
 		System.out.println(user.toString());
 		System.out.println("@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@@");

@@ -1,8 +1,7 @@
 package com.avensys.htdx1.EMSystem.controller;
 
-import java.util.ArrayList;
+import java.util.Collection;
 import java.util.Date;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -11,6 +10,7 @@ import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.BadCredentialsException;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
+import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.web.bind.annotation.CrossOrigin;
@@ -23,8 +23,6 @@ import com.avensys.htdx1.EMSystem.dto.AuthResponseDTO;
 import com.avensys.htdx1.EMSystem.dto.LoginUserDTO;
 import com.avensys.htdx1.EMSystem.dto.RegUserDTO;
 import com.avensys.htdx1.EMSystem.dto.RegUserResponseDTO;
-import com.avensys.htdx1.EMSystem.entity.Role;
-import com.avensys.htdx1.EMSystem.entity.UserEntity;
 import com.avensys.htdx1.EMSystem.repo.RoleRepo;
 import com.avensys.htdx1.EMSystem.repo.UserRepo;
 import com.avensys.htdx1.EMSystem.security.JWTGenerator;
@@ -94,6 +92,8 @@ public class AuthController {
 			Authentication authentication = am.authenticate(
 					new UsernamePasswordAuthenticationToken(logUser.getUsername(), logUser.getPassword()));
 			SecurityContextHolder.getContext().setAuthentication(authentication);
+			Collection<? extends GrantedAuthority> authorities = authentication.getAuthorities();
+			System.out.println("Authorities: " + authorities);
 			String token = jwtGen.generateToken(authentication);
 			Date currentDate = new Date();
 			Date expireDate = new Date(currentDate.getTime() + SecurityConstants.JWT_EXPIRATION);

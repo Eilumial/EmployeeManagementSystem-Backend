@@ -38,22 +38,37 @@ public class EmployeeService {
 		return empList;
 	}
 
-	public List<Employee> getEmployeeByEmail(String email) {
-		System.out.println(er.existsByEmail(email));
-		if (er.existsByEmail(email)) {
+	public List<Employee> getEmployeeByUsername(String username) {
+		if (er.existsByUserEntityUsername(username)) {
+			return er.findByUserEntityUsername(username);
+		} else {
+			Employee e = new Employee();
+			List<Employee> eList = new ArrayList<Employee>();
+			e.setErrorMessage("No records found for this username");
+			eList.add(e);
+			return eList;
+		}
+	}
+	
+	//Searches by either Email or Username
+	public List<Employee> getEmployeeByEmail(String searchInput) {
+		System.out.println(er.existsByEmail(searchInput));
+		if (er.existsByEmail(searchInput)) {
 //			System.out.println(er.findByEmail(email));
-			return er.findByEmail(email);
+			return er.findByEmail(searchInput);
+		} else if(er.existsByUserEntityUsername(searchInput)){
+			return er.findByUserEntityUsername(searchInput);
 		}else {
 			Employee e = new Employee();
 			List<Employee> eList = new ArrayList<Employee>();
-			e.setErrorMessage("No records found for this email");
+			e.setErrorMessage("No records found for this email/username.");
 			eList.add(e);
 			return eList;
 		}
 	}
 
 	public List<Employee> getEmployeeByProjectID(Long id) {
-		System.out.println("Proj ID: "+id);
+		System.out.println("Proj ID: " + id);
 		List<Employee> empList = er.findByProjectsProjectIdId(id);
 //		System.out.println("empList "+empList.get(0).toString());
 		return empList;
@@ -92,7 +107,7 @@ public class EmployeeService {
 		if (e1.getDepartments() == null) {
 			// search and set Departments if exist
 
-			// TEMP! REMOVE!
+			
 			List<Department> depList = new ArrayList<Department>();
 			e1.setDepartments(depList);
 		}
@@ -132,7 +147,11 @@ public class EmployeeService {
 			emp.setLast_name(e.getLast_name());
 			emp.setAge(e.getAge());
 			emp.setGender(e.getGender());
-			emp.setSalary(e.getSalary());
+			if (e.getSalary() != null) {
+				emp.setSalary(e.getSalary());
+			} else {
+				emp.setSalary(0.0);
+			}
 			emp.setEmail(e.getEmail());
 			return er.save(emp);
 		} else {

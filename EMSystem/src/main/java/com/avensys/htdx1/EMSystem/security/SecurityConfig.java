@@ -3,6 +3,7 @@ package com.avensys.htdx1.EMSystem.security;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.http.HttpMethod;
 import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.config.annotation.authentication.configuration.AuthenticationConfiguration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
@@ -86,9 +87,16 @@ public class SecurityConfig {
 //				.hasAnyRole("USER","ADMIN")
 //				.requestMatchers(HttpMethod.GET).authenticated()
 //				.requestMatchers(HttpMethod.PUT).authenticated()
-//				.antMatchers(HttpMethod.GET, "/api/auth/**").hasRole("ADMIN")
-//				.antMatchers(HttpMethod.POST, "/api/auth/**").hasAnyRole("ADMIN", "USER")
-				.anyRequest().authenticated() //// Then, the anyRequest() method is used to specify that any request
+//				.requestMatchers(HttpMethod.GET, "/api/auth/**").hasRole("ADMIN")
+//				.requestMatchers(HttpMethod.POST, "/api/auth/**").hasAnyRole("ADMIN", "USER")
+				
+				//.hasAuthority("ADMIN") matches to exact string "ADMIN"
+				//.hasRole("ADMIN") matches to "ROLE_ADMIN", make sure the role in db is set to "ROLE_ADMIN" instead of just "ADMIN"
+				
+				.requestMatchers("/logou").authenticated()
+				.requestMatchers("/ems/u/**").hasAuthority("USER")
+				.anyRequest().hasAuthority("ADMIN")
+//				.authenticated() //// Then, the anyRequest() method is used to specify that any request
 				//// made to the application should be authenticated.
 				
 //				.formLogin()

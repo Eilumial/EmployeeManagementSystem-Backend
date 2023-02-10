@@ -1,5 +1,7 @@
 package com.avensys.htdx1.EMSystem.entity;
 
+import com.avensys.htdx1.EMSystem.audit.Auditable;
+
 import jakarta.persistence.Entity;
 import jakarta.persistence.FetchType;
 import jakarta.persistence.GeneratedValue;
@@ -14,7 +16,7 @@ import lombok.Setter;
 @Getter
 @Entity
 @Table(name = "roles")
-public class Role {
+public class Role extends Auditable<String> {
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;

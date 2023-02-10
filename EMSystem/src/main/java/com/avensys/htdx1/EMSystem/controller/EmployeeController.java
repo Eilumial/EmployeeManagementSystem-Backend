@@ -29,9 +29,14 @@ public class EmployeeController {
 		return es.getAllEmployee();
 	}
 
-	@GetMapping(EMP_API_PATH + "/{id}")
+	@GetMapping(value= {EMP_API_PATH + "/{id}","/ems/u/{id}"})
 	public Employee getEmployeeByID(@PathVariable("id") Long id) {
 		return es.getEmployeeByID(id);
+	}
+	//EMP_API_PATH + "un/{id}",
+	@GetMapping(value= {"/ems/u/un/{un}"})
+	public List<Employee> getEmployeeByUsername(@PathVariable("un") String username) {
+		return es.getEmployeeByUsername(username);
 	}
 	
 	@GetMapping(EMP_API_PATH + "/e/{email}")
@@ -80,11 +85,11 @@ public class EmployeeController {
 //		}
 //	}
 
-	@PutMapping(EMP_API_PATH + "/update/{id}")
+	@PutMapping(value= {EMP_API_PATH + "/update/{id}","/ems/u/{id}"})
 	public ResponseEntity<Employee> updateEmployee(@PathVariable("id") Long id, @RequestBody Employee e) {
 		try {
-			System.out.println("id "+id);
-			System.out.println("e: "+e);
+			System.out.println("UPDATE EMP id "+id);
+			System.out.println("UPDATE EMP e: "+e);
 			// employee id
 			Employee emp = es.updateEmpData(id, e);
 
@@ -100,7 +105,6 @@ public class EmployeeController {
 			emp.setErrorMessage("ERROR");
 			return new ResponseEntity<>(emp, HttpStatus.BAD_REQUEST);
 		}
-
 	}
 
 	@DeleteMapping(EMP_API_PATH + "/{id}")

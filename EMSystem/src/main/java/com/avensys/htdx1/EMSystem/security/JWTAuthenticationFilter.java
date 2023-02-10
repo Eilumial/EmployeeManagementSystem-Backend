@@ -63,7 +63,7 @@ public class JWTAuthenticationFilter extends OncePerRequestFilter {
 //			System.out.println("UsernamePWAuthToken:" + authToken);
 				authToken.setDetails(new WebAuthenticationDetailsSource().buildDetails(request));
 //			authToken.setAuthenticated(true);
-//			System.out.println("UsernamePWAuthToken after set:" + authToken);
+			System.out.println("UsernamePWAuthToken after set:" + authToken);
 				SecurityContextHolder.getContext().setAuthentication(authToken);
 			}
 //		System.out.println("End of JWT Filter if block");
